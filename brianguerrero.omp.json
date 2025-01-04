@@ -100,7 +100,7 @@
             "always_enabled": true
           },
           "style": "plain",
-          "template": " {{ if gt .Code 0 }}💩{{else}}🖥️{{ end }} ",
+          "template": " {{ if gt .Code 0 }}\udb80\udd59{{else}}\uebb3{{ end }}  ",
           "type": "status"
         }
       ],
