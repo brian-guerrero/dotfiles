@@ -42,9 +42,18 @@
             "fetch_upstream_icon": true,
             "fetch_worktree_count": true
           },
-          "template": " {{ .UpstreamIcon }}{{ .HEAD }}{{if .BranchStatus }} {{ .BranchStatus }}{{ end }}{{ if .Working.Changed }} \uf044 {{ .Working.String }}{{ end }}{{ if and (.Working.Changed) (.Staging.Changed) }} |{{ end }}{{ if .Staging.Changed }} \uf046 {{ .Staging.String }}{{ end }}{{ if gt .StashCount 0 }} \ueb4b {{ .StashCount }}{{ end }} ",
+          "template": " {{ .UpstreamIcon }} {{ .HEAD }}{{if .BranchStatus }} {{ .BranchStatus }}{{ end }}{{ if .Working.Changed }} \uf044 {{ .Working.String }}{{ end }}{{ if and (.Working.Changed) (.Staging.Changed) }} |{{ end }}{{ if .Staging.Changed }} \uf046 {{ .Staging.String }}{{ end }}{{ if gt .StashCount 0 }} \ueb4b {{ .StashCount }}{{ end }} ",
           "foreground": "#ee5396",
           "type": "git",
+          "style": "diamond"
+        },
+        {
+          "properties": {
+            "cache_duration": "none"
+          },
+          "template": " \ue77f {{ .Full }} ",
+          "foreground": "#42be65",
+          "type": "dotnet",
           "style": "diamond"
         }
       ],
@@ -100,14 +109,12 @@
         {
           "properties": {
             "cache_duration": "none",
-            "folder_icon": "\ueaf7",
-            "folder_separator_icon": " \uf054 ",
-            "home_icon": "home",
-            "style": "agnoster_full"
+            "folder_separator_icon": " <#f2f4f8>\u203a</> ",
+            "style": "full"
           },
-          "leading_diamond": "<#33b1ff> \ue285 </><#ff7eb6>{</>",
+          "leading_diamond": "<#33b1ff> \ue285  </><#ff7eb6>{</>",
           "trailing_diamond": "<#ff7eb6>}</>",
-          "template": " \ue5ff {{ .Path }} ",
+          "template": "  {{ .Path }}  ",
           "foreground": "#ff7eb6",
           "type": "path",
           "style": "diamond"
