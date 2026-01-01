@@ -1,0 +1,61 @@
+[user]
+    name = Brian Guerrero
+    email = 13bguerrero@gmail.com
+
+[core]
+    editor = code --wait
+    autocrlf = true
+
+[alias]
+    # Basic shortcuts
+    co = checkout
+    br = branch -v
+    st = status
+    cm = commit
+    s = status -s
+    
+    # Branching
+    cob = checkout -b
+    
+    # Committing
+    amend = commit --amend --no-edit
+    
+    # Logging
+    lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+    last = log -1 HEAD
+    ls = log --oneline --graph --decorate --all
+    
+    # Undoing
+    unstage = reset HEAD --
+    undo = reset HEAD~1 --mixed
+    
+    # Stashing
+    stash-all = stash save --include-untracked
+    
+    # Viewing
+    contributors = shortlog --summary --numbered
+    
+ # Worktree shortcuts
+    wt = worktree
+    wtl = worktree list
+    wta = worktree add
+    wtr = worktree remove
+    wtp = worktree prune
+    
+    # Create worktree from existing branch
+    wtb = "!f() { git worktree add ../$(basename $PWD)-$1 $1; }; f"
+    
+    # Create new branch in worktree
+    wtn = "!f() { git worktree add -b $1 ../$1; }; f"
+    
+    # Remove worktree and delete branch
+    wtd = "!f() { git worktree remove $1 && git branch -d $1; }; f"
+    
+[pull]
+    rebase = false
+
+[init]
+    defaultBranch = main
+
+[color]
+    ui = auto
