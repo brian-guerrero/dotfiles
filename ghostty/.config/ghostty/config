@@ -1,0 +1,74 @@
+# Carbon Fox theme
+background = #161616
+foreground = #f2f4f8
+cursor-color = #f2f4f8
+selection-background = #3d3d3d
+selection-foreground = #f2f4f8
+
+# Black
+background-opacity = 0.97
+palette = 0=#282828
+palette = 8=#484848
+
+# Red
+palette = 1=#ee5396
+palette = 9=#f16da6
+
+# Green
+palette = 2=#25be6a
+palette = 10=#46c880
+
+# Yellow
+palette = 3=#08bdba
+palette = 11=#2dc7c4
+
+# Blue
+palette = 4=#78a9ff
+palette = 12=#8cb6ff
+
+# Magenta
+palette = 5=#be95ff
+palette = 13=#c8a5ff
+
+# Cyan
+palette = 6=#33b1ff
+palette = 14=#52bdff
+
+# White
+palette = 7=#dde1e6
+palette = 15=#f2f4f8
+
+
+# Font
+font-family = "JetBrainsMono Nerd Font"
+font-style = Regular
+font-size = 9
+
+# Window
+window-theme = ghostty
+window-padding-x = 14
+window-padding-y = 14
+confirm-close-surface=false
+resize-overlay = never
+gtk-toolbar-style = flat
+
+# Cursor styling
+cursor-style = "block"
+cursor-style-blink = false
+
+# Cursor styling + SSH session terminfo
+# (all shell integration options must be passed together)
+shell-integration-features = no-cursor,ssh-env
+
+# Keyboard bindings
+keybind = shift+insert=paste_from_clipboard
+keybind = control+insert=copy_to_clipboard
+keybind = super+control+shift+alt+arrow_down=resize_split:down,100
+keybind = super+control+shift+alt+arrow_up=resize_split:up,100
+keybind = super+control+shift+alt+arrow_left=resize_split:left,100
+keybind = super+control+shift+alt+arrow_right=resize_split:right,100
+
+# Slowdown mouse scrolling
+mouse-scroll-multiplier = 0.95
+
+
