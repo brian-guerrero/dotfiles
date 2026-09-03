@@ -18,4 +18,28 @@ if ($needsLink) {
     New-Item -ItemType Junction -Path $link -Target $target | Out-Null
     Write-Host "chezmoi: junction $link -> $target"
 }
+
+# Reconcile lazy.nvim whenever a plugin spec changes, so added/removed plugins
+# take effect on `chezmoi apply` without having to open nvim. This installs
+# missing plugins (at their lazy-lock.json pin) and removes ones no longer
+# specced; it does NOT bump versions -- that stays a deliberate `:Lazy update`
+# followed by `chezmoi re-add ~/.config/nvim/lazy-lock.json`.
+# The spec-file hashes below are what make chezmoi re-run this script on change:
+{{ $src := .chezmoi.sourceDir -}}
+{{ range (glob (joinPath $src "dot_config/nvim/lua/plugins.lua")) -}}
+#   {{ trimPrefix $src . }} {{ include . | sha256sum }}
+{{ end -}}
+{{ range (glob (joinPath $src "dot_config/nvim/lua/plugins/**/*.lua")) -}}
+#   {{ trimPrefix $src . }} {{ include . | sha256sum }}
+{{ end -}}
+$nvim = Get-Command nvim -CommandType Application -ErrorAction SilentlyContinue
+if ($nvim) {
+    Write-Host 'chezmoi: reconciling lazy.nvim plugins (install + clean)...'
+    & $nvim.Source --headless '+Lazy! install' '+Lazy! clean' '+qa'
+    if ($LASTEXITCODE -ne 0) {
+        Write-Warning "chezmoi: 'nvim --headless +Lazy! install/clean' exited $LASTEXITCODE"
+    }
+} else {
+    Write-Host 'chezmoi: nvim not on PATH; skipping lazy.nvim reconcile'
+}
 {{ end -}}
