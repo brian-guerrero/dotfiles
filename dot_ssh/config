@@ -1,0 +1,7 @@
+Host ubuntu.puffinrock.net
+  HostName ubuntu.puffinrock.net
+  User brobriang
+
+Host zima.puffinrock.net
+  HostName ZimaBlade
+  User brobriang
