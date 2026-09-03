@@ -1,0 +1,59 @@
+# Provisioning input for the run_onchange_before_windows-*-packages scripts.
+# Not a dotfile — chezmoi loads this as template data and never deploys it.
+# Edit a list, then `chezmoi apply` installs the delta.
+
+scoop:
+  # scoop owns CLI tools. 'main' is built in; only extra buckets need listing.
+  buckets:
+    - name: extras
+      source: https://github.com/ScoopInstaller/Extras
+    - name: nerd-fonts
+      source: https://github.com/matthewjberger/scoop-nerd-fonts
+  # Bucket-qualified names pin where each app resolves from.
+  apps:
+    - 7zip
+    - fzf
+    - lua-language-server
+    - oh-my-posh          # main bucket; the PowerShell profile calls it unconditionally
+    - pwsh
+    - ripgrep
+    - make
+    - opentofu
+    - extras/lazygit
+    - extras/obs-studio
+    - extras/winscp
+    - nerd-fonts/JetBrains-Mono
+    - nerd-fonts/JetBrainsMono-NF
+
+winget:
+  # GUI apps and toolchains scoop doesn't carry well. All ids resolve from the
+  # 'winget' source. Curated — a raw `winget export` also dumps runtime deps
+  # and OS components, which don't belong here.
+  packages:
+    # --- dev toolchain ---
+    - Git.Git
+    - GitHub.cli
+    - GitHub.GitHubDesktop
+    - OpenJS.NodeJS
+    - GoLang.Go
+    - Rustlang.Rustup
+    - zig.zig
+    - LLVM.LLVM
+    - Neovim.Neovim
+    - Microsoft.WindowsTerminal
+    - Microsoft.VisualStudioCode
+    - Microsoft.VisualStudio.Community   # large; comment out on a lean machine
+    - twpayne.chezmoi
+    - Gyan.FFmpeg
+    - Insecure.Nmap
+    - JetBrains.dotPeek
+    # --- dev apps / services ---
+    - Docker.DockerDesktop
+    - Ollama.Ollama
+    - Microsoft.WSL
+    - Canonical.Ubuntu
+    - Chocolatey.Chocolatey
+    - Anthropic.Claude
+    - SST.OpenCodeDesktop
+    - ZedIndustries.Zed
+    - Obsidian.Obsidian

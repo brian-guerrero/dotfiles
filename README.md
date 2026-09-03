@@ -15,15 +15,26 @@ tree serves both Windows and Linux.
 
 ## Packages (Windows)
 
-`.chezmoidata/packages.yaml` lists the scoop buckets and apps this setup expects.
-`run_onchange_before_windows-scoop-packages.ps1.tmpl` installs scoop (if missing) and
-everything in that list on `chezmoi apply`, and re-runs whenever the list changes.
-Already-installed apps are skipped. To add a tool: `scoop install <app>`, then add it to
-`packages.yaml` and `chezmoi apply`. Regenerate the whole list from the current machine:
+`.chezmoidata/packages.yaml` is the source of truth for what this setup installs, split by
+manager:
+
+- **scoop** owns CLI tools (`scoop:` key). `run_onchange_before_windows-scoop-packages.ps1.tmpl`
+  installs scoop if missing, adds the buckets, and installs the apps.
+- **winget** owns GUI apps and toolchains scoop doesn't carry well (`winget:` key).
+  `run_onchange_before_windows-winget-packages.ps1.tmpl` installs each id that isn't already
+  present. Large packages (Visual Studio, Docker Desktop) may raise a UAC prompt.
+
+Both scripts run on `chezmoi apply`, re-run whenever their slice of the YAML changes, and
+skip anything already installed. To add a tool: install it by hand, add the id to the
+right list, `chezmoi apply`. Regenerate a list from the current machine:
 
 ```powershell
+# scoop
 (scoop export | ConvertFrom-Json).apps | Where-Object Source |
   ForEach-Object { "    - $($_.Source)/$($_.Name)" }
+# winget (curate the result — export also dumps runtime deps and OS components)
+(winget export -o - | ConvertFrom-Json).Sources.Packages.PackageIdentifier |
+  ForEach-Object { "    - $_" }
 ```
 
 ## What gets deployed

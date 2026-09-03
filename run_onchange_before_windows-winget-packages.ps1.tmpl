@@ -1,0 +1,27 @@
+{{ if eq .chezmoi.os "windows" -}}
+# Installs the winget packages listed in .chezmoidata/packages.yaml.
+# run_onchange: the list is baked into this rendered script, so editing the
+# YAML changes the hash and chezmoi re-runs this on the next apply.
+# Some packages (Visual Studio, Docker Desktop) may raise a UAC prompt.
+$ErrorActionPreference = 'Stop'
+
+if (-not (Get-Command winget -ErrorAction SilentlyContinue)) {
+    Write-Warning 'winget not found - install "App Installer" from the Store, then re-run.'
+    return
+}
+
+$packages = @(
+{{ range .winget.packages -}}
+    '{{ . }}'
+{{ end -}}
+)
+
+foreach ($id in $packages) {
+    winget list --id $id --exact --disable-interactivity *> $null
+    if ($LASTEXITCODE -eq 0) { continue }
+    Write-Host "chezmoi: winget install $id"
+    winget install --id $id --exact --source winget --disable-interactivity `
+        --accept-package-agreements --accept-source-agreements
+}
+Write-Host 'chezmoi: winget packages up to date'
+{{ end -}}
