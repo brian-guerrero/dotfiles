@@ -1,6 +1,7 @@
 README.md
 .hermes
 OneDrive
+**/lazy-lock.json
 
 {{ if eq .chezmoi.os "windows" }}
 .config/ghostty/**

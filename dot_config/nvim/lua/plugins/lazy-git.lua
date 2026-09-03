@@ -1,6 +1,6 @@
 return {
 	"kdheepak/lazygit.nvim",
-	lazy = true,
+	lazy = false,
 	cmd = {
 		"LazyGit",
 		"LazyGitConfig",
@@ -14,8 +14,4 @@ return {
 	keys = {
 		{ "<leader>lg", "<cmd>LazyGit<cr>", desc = "LazyGit" },
 	},
-	config = function()
-		local lazygit = require("lazygit")
-		lazygit.setup({})
-	end,
 }
