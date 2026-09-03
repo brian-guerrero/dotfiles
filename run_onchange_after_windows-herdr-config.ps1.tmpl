@@ -1,0 +1,9 @@
+{{ if eq .chezmoi.os "windows" -}}
+$target = Join-Path $env:APPDATA 'herdr\config.toml'
+$dir = Split-Path -Parent $target
+if (-not (Test-Path $dir)) { New-Item -ItemType Directory -Path $dir -Force | Out-Null }
+@'
+{{ include "dot_config/herdr/config.toml" -}}
+'@ | Set-Content -Path $target -Encoding utf8
+Write-Host "chezmoi: wrote herdr config -> $target"
+{{ end -}}

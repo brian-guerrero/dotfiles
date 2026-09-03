@@ -1,0 +1,20 @@
+onboarding = false
+
+[keys]
+next_tab = "alt+l"
+previous_tab = "alt+h"
+
+[ui]
+agent_panel_sort = "spaces"
+status_indicators = "dots"
+
+show_agent_labels_on_pane_borders = true
+[ui.toast]
+delivery = "system"
+
+[theme]
+name = "terminal"
+auto_switch = false
+
+[theme.custom]
+accent = "#ff7eb6"
