@@ -1,0 +1,28 @@
+{{ if eq .chezmoi.os "windows" -}}
+# Installs scoop + buckets + apps listed in .chezmoidata/packages.yaml.
+# run_onchange: the list is baked into this rendered script, so editing the
+# YAML changes the hash and chezmoi re-runs this on the next apply.
+# run_before: tools land before the rest of the dotfiles are applied.
+$ErrorActionPreference = 'Stop'
+
+# 1. scoop itself (installs to ~\scoop, no admin required)
+if (-not (Get-Command scoop -ErrorAction SilentlyContinue)) {
+    Write-Host 'chezmoi: installing scoop'
+    Set-ExecutionPolicy RemoteSigned -Scope CurrentUser -Force
+    Invoke-RestMethod get.scoop.sh | Invoke-Expression
+    $env:Path = "$env:USERPROFILE\scoop\shims;$env:Path"
+}
+if (-not (Get-Command git -ErrorAction SilentlyContinue)) { scoop install git }
+
+# 2. buckets
+$have = @(scoop bucket list | ForEach-Object { "$($_.Name)" })
+{{ range .scoop.buckets -}}
+if ($have -notcontains '{{ .name }}') { scoop bucket add {{ .name }} {{ .source }} }
+{{ end -}}
+
+# 3. apps (scoop skips anything already installed and continues past failures)
+scoop update
+scoop install {{ .scoop.apps | join " " }}
+
+Write-Host 'chezmoi: scoop packages up to date'
+{{ end -}}

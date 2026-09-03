@@ -13,6 +13,19 @@ tree serves both Windows and Linux.
 - Edit a config: `chezmoi edit ~/.config/nvim/init.lua` then `chezmoi apply`
 - Pick up an out-of-band change: `chezmoi re-add`
 
+## Packages (Windows)
+
+`.chezmoidata/packages.yaml` lists the scoop buckets and apps this setup expects.
+`run_onchange_before_windows-scoop-packages.ps1.tmpl` installs scoop (if missing) and
+everything in that list on `chezmoi apply`, and re-runs whenever the list changes.
+Already-installed apps are skipped. To add a tool: `scoop install <app>`, then add it to
+`packages.yaml` and `chezmoi apply`. Regenerate the whole list from the current machine:
+
+```powershell
+(scoop export | ConvertFrom-Json).apps | Where-Object Source |
+  ForEach-Object { "    - $($_.Source)/$($_.Name)" }
+```
+
 ## What gets deployed
 
 | Config | Target (Linux) | Target (Windows) |
