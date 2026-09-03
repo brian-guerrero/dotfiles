@@ -1,0 +1,9 @@
+{{ if eq .chezmoi.os "windows" -}}
+$profilePath = Join-Path ([Environment]::GetFolderPath('MyDocuments')) 'PowerShell\Microsoft.PowerShell_profile.ps1'
+$dir = Split-Path -Parent $profilePath
+if (-not (Test-Path $dir)) { New-Item -ItemType Directory -Path $dir -Force | Out-Null }
+@'
+{{ include "dot_config/powershell/Microsoft.PowerShell_profile.ps1" -}}
+'@ | Set-Content -Path $profilePath -Encoding utf8
+Write-Host "chezmoi: wrote PowerShell profile -> $profilePath"
+{{ end -}}

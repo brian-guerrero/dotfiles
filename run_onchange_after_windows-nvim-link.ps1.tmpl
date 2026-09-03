@@ -1,0 +1,21 @@
+{{ if eq .chezmoi.os "windows" -}}
+# Neovim on Windows reads %LOCALAPPDATA%\nvim; point it at the chezmoi-managed
+# ~/.config/nvim via a directory junction (no admin / Developer Mode needed).
+$link = Join-Path $env:LOCALAPPDATA 'nvim'
+$target = Join-Path $env:USERPROFILE '.config\nvim'
+$needsLink = $true
+if (Test-Path -LiteralPath $link) {
+    $item = Get-Item -LiteralPath $link -Force
+    if ($item.LinkType -in @('Junction','SymbolicLink') -and $item.Target -contains $target) {
+        $needsLink = $false
+    } elseif ($item.LinkType) {
+        (Get-Item -LiteralPath $link -Force).Delete()
+    } else {
+        Remove-Item -LiteralPath $link -Recurse -Force
+    }
+}
+if ($needsLink) {
+    New-Item -ItemType Junction -Path $link -Target $target | Out-Null
+    Write-Host "chezmoi: junction $link -> $target"
+}
+{{ end -}}
